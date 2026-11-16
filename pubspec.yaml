@@ -1,0 +1,64 @@
+name: preservant
+description: "application de gestion et d’interaction de la formation des serviteurs."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Localisation et internationalisation
+  flutter_localizations:
+    sdk: flutter
+
+  # Icônes de style Cupertino
+  cupertino_icons: ^1.0.8
+
+  # Gestion d'état et backend
+  flutter_riverpod: ^2.5.1
+  supabase_flutter: ^2.5.0
+
+  # Utilitaires pour les fonctionnalités de l'application
+  intl: ^0.20.2
+  file_picker: ^8.0.0
+  open_filex: ^4.4.0
+  image_picker: ^1.0.7
+  csv: ^6.0.0
+  pdfx: ^2.6.0
+  shared_preferences: ^2.2.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/image/1.jpg"
+  web:
+    generate: true
+    image_path: "assets/image/1.jpg"
+    background_color: "#161616"
+    theme_color: "#D4AF37"
+  windows:
+    generate: true
+    image_path: "assets/image/1.jpg"
+    icon_size: 256
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/image/dco.webp
+    - assets/image/draveil.jpg
+    - assets/image/logo1.png
+    - assets/image/logo.webp
+    - assets/image/marie.jpg
+    - assets/image/1.jpg
