@@ -2059,3 +2059,31 @@ class PhoneInputFormatter extends TextInputFormatter {
     return TextEditingValue(text: text, selection: TextSelection.collapsed(offset: text.length));
   }
 }
+
+
+/// Réinitialisation du mot de passe d'un préseviteur par le chef d'église.
+/// Doit être appelée depuis un écran où le chef d'église est CONNECTÉ
+/// (la fonction SQL refuse tout appel sans session de chef).
+/// Retourne null en cas de succès, sinon le message d'erreur à afficher.
+Future<String?> resetPreservantPassword({
+  required String targetId,
+  required String nouveauMotDePasse,
+}) async {
+  if (nouveauMotDePasse.trim().length < 6) {
+    return 'Le mot de passe doit contenir au moins 6 caractères';
+  }
+  try {
+    await Supabase.instance.client.rpc(
+      'admin_reset_preservant_password',
+      params: {
+        'target_id': targetId,
+        'new_password': nouveauMotDePasse.trim(),
+      },
+    );
+    return null;
+  } on PostgrestException catch (e) {
+    return e.message;
+  } catch (_) {
+    return 'Erreur lors de la mise à jour du mot de passe';
+  }
+}

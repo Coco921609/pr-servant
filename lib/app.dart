@@ -1895,14 +1895,14 @@ class _PreservantPageState extends ConsumerState<PreservantPage> {
 // ACCUEIL
 // =============================================================================
 
-class GeneralHome extends StatefulWidget {
+class GeneralHome extends ConsumerStatefulWidget {
   const GeneralHome({super.key});
 
   @override
-  State<GeneralHome> createState() => _GeneralHomeState();
+  ConsumerState<GeneralHome> createState() => _GeneralHomeState();
 }
 
-class _GeneralHomeState extends State<GeneralHome> {
+class _GeneralHomeState extends ConsumerState<GeneralHome> {
   final SupabaseClient _supabase = Supabase.instance.client;
 
   bool _isLoading = true;
@@ -2308,9 +2308,49 @@ class _GeneralHomeState extends State<GeneralHome> {
     );
   }
 
+  bool _hasProfilePhoto(String? url) => url != null && url.trim().isNotEmpty;
+
+  Widget _photoPrompt() {
+    return GestureDetector(
+      onTap: () => ref.read(navigationIndexProvider.notifier).setIndex(4),
+      child: GlassCard(
+        borderColor: Ui.gold.withOpacity(0.45),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                gradient: Ui.gradient,
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(Icons.add_a_photo_rounded,
+                  color: Colors.white, size: 20),
+            ),
+            const SizedBox(width: 14),
+            const Expanded(
+              child: Text(
+                'Ajoutez votre photo de profil via Paramètres pour personnaliser votre compte.',
+                style: TextStyle(
+                  color: Ui.text,
+                  fontSize: 14,
+                  height: 1.4,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            const Icon(Icons.chevron_right_rounded, color: Ui.gold),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final teacher = _isTeacher(_userRole);
+    final hasProfilePhoto =
+    _hasProfilePhoto(ref.watch(userAvatarProvider));
 
     final filteredPreservants = _preservantsList.where((p) {
       final classe = p['classe'] ?? '';
@@ -2368,6 +2408,10 @@ class _GeneralHomeState extends State<GeneralHome> {
       children: [
         _heroImage(),
         const SizedBox(height: 22),
+        if (!hasProfilePhoto) ...[
+          _photoPrompt(),
+          const SizedBox(height: 22),
+        ],
         if (teacher) ...[
           const SectionTitle('Liste des Préseviteurs'),
           if (_userRole != 'Profs') ...[
